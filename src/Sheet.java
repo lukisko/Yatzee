@@ -141,7 +141,7 @@ public class Sheet
 
   public int[] countDice(int[] diceNum)
   {
-    int[] sum = new int[5];
+    int[] sum = new int[6];
 
     for( int i = 0; i < diceNum.length; i++ )
     {

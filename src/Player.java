@@ -69,6 +69,7 @@ public class Player
     {
       numbersOnDices[i] = dices[i].getValue();
     }
+    System.out.println(index+":"+numbersOnDices[0]+" "+numbersOnDices[1]+" "+numbersOnDices[2]+" "+numbersOnDices[3]+" "+numbersOnDices[4]);
     sheet.setScore(index,numbersOnDices);
     return true;
   }

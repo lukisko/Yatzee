@@ -42,8 +42,8 @@ public class main
               + "13: chance\n");
           System.out.println("to what row do you want to write it down?");
           int row = in.nextInt();
-          if(row<6){
-            row++;
+          if(row<=6){
+            row--;
           }
           if (p1.fillRow(row))
           {
