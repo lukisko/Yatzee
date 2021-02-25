@@ -2,11 +2,13 @@ public class Player
 {
   private int rollsRemain;
   private Dice[] dices;
-  //private int[] savedDices;
+  private Sheet sheet;
+  private int[] rowsUsed;
 
   public Player(){
-    dices = new Dice[6];
-    for (int i = 0; i < 6; i++)
+    sheet = new Sheet();
+    dices = new Dice[5];
+    for (int i = 0; i < 5; i++)
     {
       dices[i] = new Dice();
     }
@@ -19,25 +21,37 @@ public class Player
     {
       dix.roll();
     }
-    if(dices[0].getValue() == dices[1].getValue() &&
-        dices[1].getValue() == dices[2].getValue() &&
-        dices[2].getValue() == dices[3].getValue() &&
-        dices[3].getValue() == dices[4].getValue() &&
-        dices[4].getValue() == dices[5].getValue()){
-      //TODO
-    }
   }
 
   public Dice[] getDices()
   {
+    if(haveYathzee()){
+      sheet.addYahtzeeBonus();
+    }
     return dices;
   }
 
   public void reRoll(int[] indexes){
-    for (int i:
-         indexes)
-    {
-      dices[i].roll();
+    if(rollsRemain>0){
+      for (int i:
+          indexes)
+      {
+        dices[i].roll();
+      }
+      rollsRemain--;
+    } else {
+      System.out.println("you have used all your rolls");
     }
+
   }
+
+  public boolean haveYathzee(){
+    return dices[0].getValue() == dices[1].getValue() &&
+        dices[1].getValue() == dices[2].getValue() &&
+        dices[2].getValue() == dices[3].getValue() &&
+        dices[3].getValue() == dices[4].getValue() &&
+        dices[4].getValue() == dices[5].getValue();
+  }
+
+  //TODO fill row
 }
