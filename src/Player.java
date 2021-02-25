@@ -12,7 +12,8 @@ public class Player
     {
       dices[i] = new Dice();
     }
-    rollsRemain= 3;
+    rollsRemain= 2;
+    rowsUsed = new int[15];
   }
 
   public void roll(){
@@ -40,7 +41,7 @@ public class Player
       }
       rollsRemain--;
     } else {
-      System.out.println("you have used all your rolls");
+      System.out.println("you have used all your rolls use command 'wd' to write it down to table");
     }
 
   }
@@ -53,5 +54,26 @@ public class Player
         dices[4].getValue() == dices[5].getValue();
   }
 
-  //TODO fill row
+  public boolean fillRow(int index){
+    if (index>13 || index<0){
+      System.out.println("no row like that exist");
+      return false;
+    }
+    if (rowsUsed[index] == 1){
+      System.out.println("You have already filled out this row, please type 'rr' to re-roll or 'wd' to write it to another row");
+      return false;
+    }
+    rowsUsed[index]++;
+    int[] numbersOnDices = new int[5];
+    for (int i= 0;i<5;i++)
+    {
+      numbersOnDices[i] = dices[i].getValue();
+    }
+    sheet.setScore(index,numbersOnDices);
+    return true;
+  }
+
+  public int getTotalScore(){
+    return sheet.getTotalScore();
+  }
 }
