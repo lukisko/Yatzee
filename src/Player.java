@@ -1,8 +1,8 @@
 public class Player
 {
   private int rollsRemain;
-  private Dice[] dices;
-  private Sheet sheet;
+  private final Dice[] dices;
+  private final Sheet sheet;
   private int[] rowsUsed;
 
   public Player(){
