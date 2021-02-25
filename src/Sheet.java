@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Sheet
 {
   private int[] score;
@@ -16,6 +18,10 @@ public class Sheet
   public void setScore(int rowIndex, int[] diceNumbers)
   {
     score[rowIndex] = calculateScore(rowIndex, diceNumbers);
+    if(upperTotalBonus())
+    {
+      score[6] = 35;
+    }
   }
   public int getTotalScore()
   {
@@ -25,6 +31,17 @@ public class Sheet
       sum += score[i];
     }
     return sum;
+  }
+
+  public Boolean upperTotalBonus()
+  {
+    int sum = 0;
+
+    for( int i = 0; i < 5 ; i++ )
+    {
+      sum+= score[i];
+    }
+    return (sum >= 63);
   }
 
   public String toString()
@@ -40,6 +57,11 @@ public class Sheet
 
   public int calculateScore(int rowIndex, int[] diceNum)
   {
+    int[] array = countDice(diceNum);
+    boolean two = false;
+    boolean three = false;
+    Arrays.sort(diceNum);
+
     switch(rowIndex)
     {
       case 0:
@@ -57,18 +79,33 @@ public class Sheet
       case 6:
         return 35;
       case 7:
+        for(int i = 0; i < array.length; i++)
+        {
+          if(array[i] >= 3) return diceSumAll(diceNum);
+        }
+        return 0;
       case 8:
-      case 13:
-        return diceSumAll(diceNum);
-
+        for(int i = 0; i < array.length; i++)
+        {
+          if(array[i] >= 4) return diceSumAll(diceNum);
+        }
+        return 0;
       case 9:
-        return 25;
+        for(int i = 0; i < array.length; i++)
+        {
+          if(array[i] == 2) two = true;
+          if(array[i] == 3) three = true;
+        }
+        if(two && three) return 25;
+        return 0;
       case 10:
         return 30;
       case 11:
         return 40;
       case 12:
         return 50;
+      case 13:
+        return diceSumAll(diceNum);
       case 14:
         return 100;
     }
@@ -102,31 +139,31 @@ public class Sheet
     return sum;
   }
 
-  public int countDice(int diceNumber, int[] diceNum)
+  public int[] countDice(int[] diceNum)
   {
-    int sum = 0;
+    int[] sum = new int[5];
 
     for( int i = 0; i < diceNum.length; i++ )
     {
-      switch(diceNumber)
+      switch(diceNum[i])
       {
         case 1:
-          if(diceNum[i] == 1) sum++;
+          sum[0]++;
           break;
         case 2:
-          if(diceNum[i] == 2) sum++;
+          sum[1]++;
           break;
         case 3:
-          if(diceNum[i] == 3) sum++;
+          sum[2]++;
           break;
         case 4:
-          if(diceNum[i] == 4) sum++;
+          sum[3]++;
           break;
         case 5:
-          if(diceNum[i] == 5) sum++;
+          sum[4]++;
           break;
         case 6:
-          if(diceNum[i] == 6) sum++;
+          sum[5]++;
           break;
       }
     }
