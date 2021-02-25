@@ -9,7 +9,7 @@ public class Dice
   }
 
   public void roll(){
-    value = new Random().nextInt(6);
+    value = new Random().nextInt(6) + 1;
   }
 
   public int getValue()
