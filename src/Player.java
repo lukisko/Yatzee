@@ -1,16 +1,19 @@
 public class Player
 {
   private int rollsRemain;
-  private Dice[] dices;
-  //private int[] savedDices;
+  private final Dice[] dices;
+  private final Sheet sheet;
+  private int[] rowsUsed;
 
   public Player(){
-    dices = new Dice[6];
-    for (int i = 0; i < 6; i++)
+    sheet = new Sheet();
+    dices = new Dice[5];
+    for (int i = 0; i < 5; i++)
     {
       dices[i] = new Dice();
     }
-    rollsRemain= 3;
+    rollsRemain= 2;
+    rowsUsed = new int[15];
   }
 
   public void roll(){
@@ -19,25 +22,58 @@ public class Player
     {
       dix.roll();
     }
-    if(dices[0].getValue() == dices[1].getValue() &&
-        dices[1].getValue() == dices[2].getValue() &&
-        dices[2].getValue() == dices[3].getValue() &&
-        dices[3].getValue() == dices[4].getValue() &&
-        dices[4].getValue() == dices[5].getValue()){
-      //TODO
-    }
   }
 
   public Dice[] getDices()
   {
+    if(haveYathzee()){
+      sheet.addYahtzeeBonus();
+    }
     return dices;
   }
 
   public void reRoll(int[] indexes){
-    for (int i:
-         indexes)
-    {
-      dices[i].roll();
+    if(rollsRemain>0){
+      for (int i:
+          indexes)
+      {
+        dices[i].roll();
+      }
+      rollsRemain--;
+    } else {
+      System.out.println("you have used all your rolls use command 'wd' to write it down to table");
     }
+
+  }
+
+  public boolean haveYathzee(){
+    return dices[0].getValue() == dices[1].getValue() &&
+        dices[1].getValue() == dices[2].getValue() &&
+        dices[2].getValue() == dices[3].getValue() &&
+        dices[3].getValue() == dices[4].getValue() &&
+        dices[4].getValue() == dices[5].getValue();
+  }
+
+  public boolean fillRow(int index){
+    if (index>13 || index<0){
+      System.out.println("no row like that exist");
+      return false;
+    }
+    if (rowsUsed[index] == 1){
+      System.out.println("You have already filled out this row, please type 'rr' to re-roll or 'wd' to write it to another row");
+      return false;
+    }
+    rowsUsed[index]++;
+    int[] numbersOnDices = new int[5];
+    for (int i= 0;i<5;i++)
+    {
+      numbersOnDices[i] = dices[i].getValue();
+    }
+    sheet.setScore(index,numbersOnDices);
+    return true;
+  }
+
+  public int getTotalScore(){
+    return sheet.getTotalScore();
   }
 }
